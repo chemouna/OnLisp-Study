@@ -95,7 +95,7 @@
        (let [elem (first sq)]
          (if (= y elem)
            nil
-           (if (test x elem) 
+           (if (test x elem)
              sq
              (recur x y (rest sq) test))))))
 
@@ -104,5 +104,15 @@
   [x y lst test]
   (let [rst (before? y x lst test)]
     (and rst (member x rst test))))
+
+(defn duplicate?
+  [obj lst test]
+  (member obj (rest (member obj lst test)) test))
+
+(defn split-if
+  "Returns both halves the first half contains elements that fail the predicate f and the second half succeeds for the predicate"
+  [pred lst]
+  (cons (for [x lst :when (not (pred x))] x)
+        (cons (for [x lst :when (pred x)] x) '())))
 
 
