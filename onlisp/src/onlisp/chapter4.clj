@@ -66,7 +66,7 @@
            :else (concat acc (apply concat (map #(rec % acc) x)))))]
     (rec v '())))
 
-(Defn zip-util [root]
+(defn zip-util [root]
   (if (seq? root)
     (zip/seq-zip root)
     (zip/vector-zip root)))
@@ -81,12 +81,28 @@
           (zip/remove loc)
           loc))))))
 
+(defn member
+  [x sq test]
+  (if (sequential? sq)
+    (if (test x (first sq))
+      sq
+      (recur x (rest sq) test))))
+
 (defn before?
-  "Checks in a value x is found before another value y in the list"
-  [x y lst test] ;; todo: find a way to make test defaults to equal
-  (and lst
-       (let [fst (first lst)]
-         (cond
-           (test y fst) nil
-           (test x fst) lst
-           :else (recur x y (rest lst) test)))))
+  "Checks if a value that returns true when test is called on it with x is found before another value y in the list, if it is found returns the rest of the list starting from x"
+  [x y sq test]
+  (and sq
+       (let [elem (first sq)]
+         (if (= y elem)
+           nil
+           (if (test x elem) 
+             sq
+             (recur x y (rest sq) test))))))
+
+(defn after?
+  "Checks if a value that returns true when test is called on it with x is found after another value y in the list, if it is found returns the rest of the list starting from x"
+  [x y lst test]
+  (let [rst (before? y x lst test)]
+    (and rst (member x rst test))))
+
+
