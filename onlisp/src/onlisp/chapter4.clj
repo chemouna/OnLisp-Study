@@ -44,8 +44,6 @@
   (for [x lst :when (f x)]
     x))
 
-;(filtr even? '(2 3 4 5 6 7 8 9))
-
 (defn group [source n]
   (if (zero? n) (pr "error: zero length"))
 
@@ -58,4 +56,20 @@
        '()
        (list remainder)))))
 
-(group '(1 2 3 4 5 6 7) 4)
+; (group '(1 2 3 4 5 6 7) 4)
+
+(defn flatten2
+  [x]
+  (fn rec
+    [x acc]
+    (cond
+      (empty? x) acc
+      (not (list x)) (cons x acc)
+      :else (rec (first x) (rec (rest x) acc))))
+  (x nil))
+
+
+;; what i need to practice to understand this :
+;; - using recur two/multiple times
+;; - using a lambda inside a function
+
