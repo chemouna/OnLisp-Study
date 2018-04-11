@@ -1,7 +1,7 @@
 (ns onlisp.chapter4
   (:use [clojure.tools.trace :as trace]))
 
-(trace/trace-ns 'onlisp.chapter4)
+;(trace/trace-ns 'onlisp.chapter4)
 
 (defn find2
   [f lst]
@@ -56,8 +56,6 @@
        '()
        (list remainder)))))
 
-; (group '(1 2 3 4 5 6 7) 4)
-
 (defn flatten2
   [x]
   (fn rec
@@ -67,9 +65,4 @@
       (not (list x)) (cons x acc)
       :else (rec (first x) (rec (rest x) acc))))
   (x nil))
-
-
-;; what i need to practice to understand this :
-;; - using recur two/multiple times
-;; - using a lambda inside a function
 

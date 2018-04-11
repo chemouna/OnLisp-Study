@@ -1,12 +1,18 @@
 
 (ns onlisp.chapter4-test
-  (:require [clojure.test :refer :all]
-            [onlisp.chapter4 :refer :all]))
+  (:use clojure.test)
+  (:use onlisp.chapter4))
 
-(deftest test-longer?
+(deftest test-longer
   (is (longer '(a b c) '(x y)))
   (is (not (longer '(a b c) '(x y z))))
   (is (not (longer '(a b) '(x y z))))
   (is (not (longer '(x) '(y))))
   (is (not (longer '() '()))))
 
+(deftest test-flatten2
+  (is (flatten2 '((1 2 3) (4 5))) '(1 2 3 4 5))
+  (is (flatten2 '() '()) '())
+  (is (flatten2 '(1 2)) '(1 2)))
+
+;(run-tests)
