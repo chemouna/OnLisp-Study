@@ -16,4 +16,18 @@
   (is (flatten2 '(1 2)) '(1 2))
   (is (flatten2 '(9 (2 2) (3 4 (5 6)) 8)) '(9 2 2 3 4 5 6 8)))
 
+;(comment "
+(deftest test-prune
+  (is (prune even? '()) '())
+  (is (prune even? '(1 2 (3 (4 5) 6) 7 8 (9))) (1 (3 (5)) 7 (9))))
+;)
+
+(deftest test-before?
+  (is (before? 3 4 '(1 2 3 4) =) '(3 4))
+  (is (before? 'b 'c '(1 2 a b c) =) '(b c))
+  (is (before? 1 'c '(1 2 a b c) =) '(1 2 a b c)) 
+  (is (before? 'a 1 '(1 2 a b c) =) nil))
+
 (run-tests)
+
+

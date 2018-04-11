@@ -1,5 +1,6 @@
 (ns onlisp.chapter4
-  (:use [clojure.tools.trace :as trace]))
+  (:use [clojure.tools.trace :as trace]
+        [clojure.zip :as zip]))
 
 (trace/trace-ns 'onlisp.chapter4)
 
@@ -65,3 +66,27 @@
            :else (concat acc (apply concat (map #(rec % acc) x)))))]
     (rec v '())))
 
+(Defn zip-util [root]
+  (if (seq? root)
+    (zip/seq-zip root)
+    (zip/vector-zip root)))
+
+(defn prune [f tree]
+  (loop [loc (zip-util tree)]
+    (if (zip/end? loc)
+      (zip/root loc)
+      (recur
+       (zip/next
+        (if (f (zip/node loc))
+          (zip/remove loc)
+          loc))))))
+
+(defn before?
+  "Checks in a value x is found before another value y in the list"
+  [x y lst test] ;; todo: find a way to make test defaults to equal
+  (and lst
+       (let [fst (first lst)]
+         (cond
+           (test y fst) nil
+           (test x fst) lst
+           :else (recur x y (rest lst) test)))))
