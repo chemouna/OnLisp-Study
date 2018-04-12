@@ -54,7 +54,10 @@
 (deftest test-mapcars
   (is (mapcars #(Math/sqrt %) '(4 9 25) '(49 64)) '(2.0 3.0 5.0 7.0 8.0)))
 
+(deftest test-rmapcar
+  (is (rmapcar + '(1 (2 (3) 4)) '(10 (20 (30) 40))) '(11 (22 (33) 44))))
+
+(deftest test-explode
+  (is (explode "BOMB") '(B O M B)))
+
 (run-tests)
-
-
-

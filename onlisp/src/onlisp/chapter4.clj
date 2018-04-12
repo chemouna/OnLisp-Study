@@ -227,3 +227,36 @@
                          (concat results (map f (first colls))))))]
     (rec lsts '())))
 
+(def atom?
+  (complement coll?))
+
+(defn rmapcar
+  [f & args]
+  (if (some atom? args)
+    (apply f args)
+    (apply map #(apply rmapcar f %&) args)))
+
+(defn readlist
+  [& args]
+  (read-string
+   (str "(" (apply read-line args) ")")))
+
+(def mkstr str)
+
+(defn mkstr2
+  [& args]
+  (with-out-str
+    (doseq [v args]
+      (print v))))
+
+(defn symb
+  [& args]
+  (symbol (apply mkstr args)))
+
+(defn reread
+  [& args]
+  (read-string (mkstr args)))
+
+(defn explode
+  [sym]
+  (map #(symbol (str %)) (seq (str sym))))
