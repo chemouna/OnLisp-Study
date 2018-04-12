@@ -16,9 +16,11 @@
   (is (flatten2 '(1 2)) '(1 2))
   (is (flatten2 '(9 (2 2) (3 4 (5 6)) 8)) '(9 2 2 3 4 5 6 8)))
 
+(comment "
 (deftest test-prune
   (is (prune even? '()) '())
   (is (prune even? '(1 2 (3 (4 5) 6) 7 8 (9))) (1 (3 (5)) 7 (9))))
+")
 
 (deftest test-before?
   (is (before? 3 4 '(1 2 3 4) =) '(3 4))
@@ -33,8 +35,12 @@
   (is (split-if #(> % 4) '(1 2 3 4 5 6 7 8 9 10)) '((1 2 3 4) (5 6 7 8 9 10))))
 
 (deftest test-most
-  (is (most length '((a b) (a b c) (a) (e f g))) '((a b c) 3))
+  (is (most count '((a b) (a b c) (a) (e f g))) '((a b c) 3))
   (is (most count '((a b) (c d e) (g h l m))) '((g h l m) 4)))
+
+(deftest test-best
+  (is (best > '(1 2 3 4 5)) 5)
+  (is (best < '(8 2 3 9 6 12)) 2))
 
 (run-tests)
 

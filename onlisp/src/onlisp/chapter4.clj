@@ -137,6 +137,19 @@
        [(dosync (ref-set wins x) (ref-set mx (f x)))]))
     (list @wins @mx)))
 
+(defn best
+  "Takes a function and a list where the function must be a predicate of two
+  arguments and returns the element that beats all others according to the predicate"
+  [pred lst]
+  (if (empty? lst) nil
+      (let [best (first lst)]
+        (letfn [(helper [f coll best]
+                  (cond
+                    (empty? coll) best
+                    (f (first coll) best) (helper f (rest coll) (first coll))
+                    :else (helper f (rest coll) best)))]
+          (helper pred (rest lst) best)))))
+
 (defn best2
   "Takes a function and a list where the function must be a predicate of two
   arguments and returns the element that beats all others according to the predicate
