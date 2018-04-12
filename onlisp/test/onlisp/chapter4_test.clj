@@ -45,6 +45,9 @@
 (deftest test-mostn
   (is (mostn count '((a b) (a b c) (a) (e f g))) '(((a b c) (e f g)) 3)))
 
+(deftest test-mapa-b
+  (is (mapa-b #(+ 1 %) -2 0 0.5) '(-1 -0.5 0.0 0.5 1.0)))
+
 (run-tests)
 
 
