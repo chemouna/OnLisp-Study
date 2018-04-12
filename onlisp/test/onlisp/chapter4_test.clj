@@ -51,6 +51,9 @@
 (deftest test-map->
   (is (map-> identity 5 #(> % 10) inc) '(5 6 7 8 9 10)))
 
+(deftest test-mapcars
+  (is (mapcars #(Math/sqrt %) '(4 9 25) '(49 64)) '(2.0 3.0 5.0 7.0 8.0)))
+
 (run-tests)
 
 

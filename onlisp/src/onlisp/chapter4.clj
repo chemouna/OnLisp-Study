@@ -214,3 +214,16 @@
               (lazy-seq (when (not (test-fn i))
                           (cons (f i) (go (succ-fn i))))))]
     (go start)))
+
+(def mappend mapcat)
+
+(defn mapcars
+  [f & lsts]
+  (letfn [(rec
+            [colls results]
+            (cond
+              (empty? colls) results
+              :else (recur (rest colls)
+                         (concat results (map f (first colls))))))]
+    (rec lsts '())))
+
