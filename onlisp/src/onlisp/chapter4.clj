@@ -123,6 +123,26 @@
         (letfn [(helper [score coll winner m]
                   (cond
                     (empty? coll) (list winner m)
-                    (< m (score (first coll))) (helper score (rest coll) (first coll) (score (first coll))) ;; todo put score (first coll) in a var
+                    (< m (score (first coll))) (helper score (rest coll) (first coll) (score (first coll))) 
                     :else (helper score (rest coll) winner m)))]
           (helper f (rest lst) (first lst) max)))))
+
+(defn most2
+  [f lst]
+  "Another way to implement most function above using list comprehensions"
+  (let [wins (ref (first lst))
+        mx (ref (f @wins))]
+    (doall
+     (for [x (rest lst) :when (> (f x) @mx)]
+       [(dosync (ref-set wins x) (ref-set mx (f x)))]))
+    (list @wins @mx)))
+
+(defn best2
+  "Takes a function and a list where the function must be a predicate of two
+  arguments and returns the element that beats all others according to the predicate
+  (this implementation uses lisp comprehensions)"
+  [f lst]
+  (let [wins (ref (first lst))]
+    (last
+     (for [x (rest lst) :when (f x @wins)]
+       (dosync (ref-set wins x))))))
