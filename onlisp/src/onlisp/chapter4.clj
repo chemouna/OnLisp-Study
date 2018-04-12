@@ -159,3 +159,26 @@
     (last
      (for [x (rest lst) :when (f x @wins)]
        (dosync (ref-set wins x))))))
+
+(defn best3
+  "Does the same as the two best implementations above but a lot more succint"
+  [f xs]
+  (reduce #(if (f %1 %2) %1 %2) xs))
+
+(defn most3
+  "Does the same as the two most implementations above but a lot more succint"
+  [f xs]
+  (reduce #(if (< (f %1) (f %2)) (list %2 (f %2)) (list %1 (f %1))) xs))
+
+(defn mostn
+  [f lst]
+  (let [winners (ref (list (first lst)))
+        mx (ref (f (first lst)))]
+    (doall
+     (for [x (rest lst) :when (>= (f x) @mx)]
+       [(dosync
+         (cond
+           (= (f x) @mx) (ref-set winners (cons x @winners))
+           :else (and (ref-set winners (list x)) (ref-set mx (f x)))))]))
+    (list @winners @mx)))
+

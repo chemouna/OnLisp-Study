@@ -42,6 +42,9 @@
   (is (best > '(1 2 3 4 5)) 5)
   (is (best < '(8 2 3 9 6 12)) 2))
 
+(deftest test-mostn
+  (is (mostn count '((a b) (a b c) (a) (e f g))) '(((a b c) (e f g)) 3)))
+
 (run-tests)
 
 
