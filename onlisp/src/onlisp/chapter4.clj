@@ -115,4 +115,14 @@
   (cons (for [x lst :when (not (pred x))] x)
         (cons (for [x lst :when (pred x)] x) '())))
 
-
+(defn most
+  "Takes a list and a scoring function and returns the element with the highest score, If there's a tie it returns the element occuring first."
+  [f lst]
+  (if (empty? lst) (list nil nil)
+      (let [max (f (first lst))]
+        (letfn [(helper [score coll winner m]
+                  (cond
+                    (empty? coll) (list winner m)
+                    (< m (score (first coll))) (helper score (rest coll) (first coll) (score (first coll))) ;; todo put score (first coll) in a var
+                    :else (helper score (rest coll) winner m)))]
+          (helper f (rest lst) (first lst) max)))))

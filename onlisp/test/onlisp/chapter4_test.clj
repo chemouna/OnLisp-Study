@@ -32,6 +32,11 @@
 (deftest test-split-if
   (is (split-if #(> % 4) '(1 2 3 4 5 6 7 8 9 10)) '((1 2 3 4) (5 6 7 8 9 10))))
 
+(deftest test-most
+  (is (most length '((a b) (a b c) (a) (e f g))) '((a b c) 3))
+  (is (most count '((a b) (c d e) (g h l m))) '((g h l m) 4)))
+
 (run-tests)
+
 
 
