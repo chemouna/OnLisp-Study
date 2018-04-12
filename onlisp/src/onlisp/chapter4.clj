@@ -182,3 +182,17 @@
            :else (and (ref-set winners (list x)) (ref-set mx (f x)))))]))
     (list @winners @mx)))
 
+;; todo: maybe try to do it with scan ?
+
+(defn mapa-b
+  [f a b step]
+  (let [results (list (f a))]
+    (letfn [(rec
+            [s results]
+            (cond
+              (> s b) results
+              :else (cons (+ s step) (rec (+ s step) results))))]
+      (rec (f a) results))))
+
+(mapa-b #(+ 1 %) -2 0 0.5)
+
