@@ -123,7 +123,7 @@
         (letfn [(helper [score coll winner m]
                   (cond
                     (empty? coll) (list winner m)
-                    (< m (score (first coll))) (helper score (rest coll) (first coll) (score (first coll))) 
+                    (< m (score (first coll))) (helper score (rest coll) (first coll) (score (first coll)))
                     :else (helper score (rest coll) winner m)))]
           (helper f (rest lst) (first lst) max)))))
 
@@ -183,15 +183,14 @@
     (list @winners @mx)))
 
 (defn mapa-b
-  [f a b step]
- ;; (let [results (list (f a))]
-    (letfn [(rec
-              [s results]
-              (println results)
+  ([f a b] (mapa-b f a b 1))
+  ([f a b step]
+   (letfn [(rec
+            [s results]
             (cond
               (> s b) (cons (+ s step) results)
               :else (cons (+ s step) (rec (+ s step) results))))]
-      (conj (rec (f a) '()) (f a))))
+    (conj (rec (f a) '()) (f a)))))
 
 (defn map0-n
   [f n]
@@ -201,3 +200,17 @@
   [f n]
   (mapa-b f 1 n))
 
+(defn map->
+  [f start test-fn succ-fn] ;; test-fn is kind of a stop function
+  (letfn [(rec
+            [s results]
+            (cond
+              (test-fn s) results
+              :else (cons s (rec (succ-fn s) results))))]
+     (rec (f start) '()) ))
+
+(defn map2-> [f start test-fn succ-fn]
+  (letfn [(go [i]
+              (lazy-seq (when (not (test-fn i))
+                          (cons (f i) (go (succ-fn i))))))]
+    (go start)))

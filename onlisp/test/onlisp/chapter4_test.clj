@@ -48,6 +48,9 @@
 (deftest test-mapa-b
   (is (mapa-b #(+ 1 %) -2 0 0.5) '(-1 -0.5 0.0 0.5 1.0)))
 
+(deftest test-map->
+  (is (map-> identity 5 #(> % 10) inc) '(5 6 7 8 9 10)))
+
 (run-tests)
 
 
